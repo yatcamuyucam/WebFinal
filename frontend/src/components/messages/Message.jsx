@@ -1,18 +1,25 @@
-const Message = () => {
+import { useAuthContext } from "../../../context/AuthContext";
+import useConversation from "../../zustand/useConversation";
+
+
+const Message = ({ message }) => {
+    const { authUser } = useAuthContext();
+    const { selectedConversation } = useConversation();
+    const fromMe = message.senderId === authUser._id;
+    const chatClassName = fromMe ? "chat-end" : "chat-start";
+    const profilePicture = fromMe ? authUser.profilePicture : selectedConversation?.profilePicture;
+    const bubbleBgColor = fromMe ? "bg-blue-500" : "";
     return (
-        <div className="chat chat-end">
+        <div className={`chat ${chatClassName}`}>
             <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
-                    <img alt="Tailwind css chat bubble component"
-                        src={"https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/ufo_alien_space_avatar-512.png"}>
-                    </img>
+                    <img alt='Tailwind CSS chat bubble component' src={profilePicture} />
                 </div>
             </div>
-            <div className="chat-bubble text-white bg-blue-500">
-                Hi!! How r u?
-            </div>
+            
+            <div className={`chat-bubble text-white ${bubbleBgColor}`}>{message.message}</div>
             <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
-                18.32
+                {message.createdAt}
             </div>
         </div>
     );
