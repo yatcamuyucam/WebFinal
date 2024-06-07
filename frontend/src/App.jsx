@@ -6,17 +6,24 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 
 function App() {
+  // Kimlik doğrulama durumunu AuthContext'ten al
   const { authUser } = useAuthContext();
+
   return (
     <div className="p-4 h-screen flex items-center justify-center">
+      {/* Sayfa yönlendirmeleri için Routes bileşeni */}
       <Routes>
-      <Route path='/' element={authUser ? <Home /> : <Navigate to={"/login"} />} />
-				<Route path='/login' element={authUser ? <Navigate to='/' /> : <Login />} />
-				<Route path='/signup' element={authUser ? <Navigate to='/' /> : <SignUp />} />
+        {/* Ana sayfa için yönlendirme: Kimlik doğrulama durumuna göre Home veya Login sayfasına yönlendirme */}
+        <Route path='/' element={authUser ? <Home /> : <Navigate to={"/login"} />} />
+        {/* Giriş sayfası için yönlendirme: Kimlik doğrulama durumuna göre ana sayfaya veya giriş sayfasına yönlendirme */}
+        <Route path='/login' element={authUser ? <Navigate to='/' /> : <Login />} />
+        {/* Kayıt sayfası için yönlendirme: Kimlik doğrulama durumuna göre ana sayfaya veya kayıt sayfasına yönlendirme */}
+        <Route path='/signup' element={authUser ? <Navigate to='/' /> : <SignUp />} />
       </Routes>
+      {/* Bildirimler için Toast bileşeni */}
       <Toaster position="bottom-center" reverseOrder={false} />
     </div>
-
   );
 }
+
 export default App;

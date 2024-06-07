@@ -1,29 +1,18 @@
-import { BiSolidLogOut } from "react-icons/bi";
-import useLogout from "../../hooks/useLogout";
+import { BiSolidLogOut } from "react-icons/bi"; // Çıkış simgesini içe aktarır
+import useLogout from "../../hooks/useLogout"; // Oturumu kapatma kancasını içe aktarır
 
+// Çıkış Butonu bileşeni
 const LogoutButton = () => {
   
-  const {loading,logout}= useLogout();
+  const { loading, logout } = useLogout(); // Oturumu kapatma kancasını kullanarak oturum kapatma işlevselliğine erişim sağlar
   return (
-    <div className="mt-auto">
-        <BiSolidLogOut className="w-6 h-6 text-white cursor-pointer"
-        onClick={logout}
+    <div className="mt-auto"> {/* Diğer bileşenlerden aşağıda olacak şekilde ayarlar */}
+        <BiSolidLogOut 
+          className="w-6 h-6 text-white cursor-pointer" // Çıkış simgesinin stili
+          onClick={logout} // Çıkış işlevselliğini yönetir
         />
     </div>
   );
 };
 
-export default LogoutButton;
-
-
-/* 
-import { BiSolidLogOut } from "react-icons/bi";
-const LogoutButton = () => {
-  return (
-    <div className="mt-auto">
-        <BiSolidLogOut className="w-6 h-6 text-white cursor-pointer"/>
-    </div>
-  );
-};
-
-export default LogoutButton; */
+export default LogoutButton; // Çıkış Butonu bileşenini dışa aktarır

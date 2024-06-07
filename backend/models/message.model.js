@@ -1,23 +1,25 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"; // Mongoose kütüphanesini projeye dahil eder.
 
+// Mesaj şemasını tanımlar
 const messageSchema = new mongoose.Schema({
     senderId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        type: mongoose.Schema.Types.ObjectId, // Gönderenin kullanıcı kimliğini saklar
+        ref: "User", // 'User' modeline referans verir
+        required: true, // Bu alanın zorunlu olduğunu belirtir
     },
     receiverId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        type: mongoose.Schema.Types.ObjectId, // Alıcının kullanıcı kimliğini saklar
+        ref: "User", // 'User' modeline referans verir
+        required: true, // Bu alanın zorunlu olduğunu belirtir
     },
     message: {
-        type: String,
-        required: true,
+        type: String, // Mesaj içeriğini saklar
+        required: true, // Bu alanın zorunlu olduğunu belirtir
     },
-    //createdAt, updatedAt => message.createdAt, message.updatedAt
+    // createdAt ve updatedAt alanları için zaman damgalarını otomatik olarak ekler
 }, { timestamps: true });
 
+// Mesaj modelini tanımlar
 const Message = mongoose.model("Message", messageSchema);
 
-export default Message;
+export default Message; // Mesaj modelini dışa aktarır
