@@ -1,44 +1,42 @@
-import { useState } from "react"; // React'ten useState kancasını içe aktarır
-import { RiUserSearchLine } from "react-icons/ri"; // Kullanıcı arama simgesini içe aktarır
-import useConversation from "../../zustand/useConversation"; // Zustand kancasını kullanarak sohbet bilgilerine erişim sağlar
-import useGetConversations from "../../hooks/useGetConversations"; // Sohbetleri alma kancasını kullanarak sohbetleri alır
-import toast from "react-hot-toast"; // Bildirimleri göstermek için kütüphane
+import { useState } from "react"; 
+import { RiUserSearchLine } from "react-icons/ri"; 
+import useConversation from "../../zustand/useConversation"; 
+import useGetConversations from "../../hooks/useGetConversations"; 
+import toast from "react-hot-toast"; 
 
-// Arama Girişi bileşeni
 const SearchInput = () => {
-	const [search, setSearch] = useState(""); // Arama terimini yöneten state'i tanımlar
-	const { setSelectedConversation } = useConversation(); // Seçili sohbeti ayarlamak için kancayı kullanır
-	const { conversations } = useGetConversations(); // Sohbetleri alır
+	const [search, setSearch] = useState(""); 
+	const { setSelectedConversation } = useConversation(); 
+	const { conversations } = useGetConversations(); 
 
-	// Form gönderme işlevini yöneten fonksiyon
+	// Form gönderme işlevi
 	const handleSubmit = (e) => {
-		e.preventDefault(); // Formun varsayılan davranışını engeller
-		if (!search) return; // Eğer arama terimi boşsa işlem yapmaz
-		if (search.length < 3) { // Arama teriminin en az 3 karakter olması gerektiğini kontrol eder
-			return toast.error("Search term must be at least 3 characters long"); // Hata bildirimi gösterir
+		e.preventDefault(); // Formun varsayılan davranışını engelle
+		if (!search) return; 
+		if (search.length < 3) { 
+			return toast.error("Search term must be at least 3 characters long"); // Hata bildirimi göster
 		}
 
-		// Sohbetler arasında arama terimini içeren bir sohbet bulmaya çalışır
 		const conversation = conversations.find((c) => c.fullName.toLowerCase().includes(search.toLowerCase()));
 
 		if (conversation) { // Eğer sohbet bulunursa
-			setSelectedConversation(conversation); // Seçili sohbeti ayarlar
-			setSearch(""); // Arama terimini sıfırlar
+			setSelectedConversation(conversation); // Seçili sohbeti ayarla
+			setSearch(""); 
 		} else {
-			toast.error("No such user found!"); // Kullanıcı bulunamazsa hata bildirimi gösterir
+			toast.error("No such user found!"); // Kullanıcı bulunamazsa hata
 		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='flex items-center gap-2'> {/* Form bileşeni oluşturur ve onSubmit olayı handleSubmit fonksiyonunu tetikler */}
+		<form onSubmit={handleSubmit} className='flex items-center gap-2'> 
 			<input
 				type='text'
-				placeholder='Search…' // Arama kutusuna yer tutucu metin
-				className='input input-bordered rounded-full' // Arama kutusunun stili
+				placeholder='Search…' 
+				className='input input-bordered rounded-full' 
 				value={search} // Arama terimini görüntüler
-				onChange={(e) => setSearch(e.target.value)} // Arama terimini günceller
+				onChange={(e) => setSearch(e.target.value)} 
 			/>
-			<button type='submit' className='btn btn-circle bg-orange-500 text-white'> {/* Arama düğmesi */}
+			<button type='submit' className='btn btn-circle bg-orange-500 text-white'> 
 				<RiUserSearchLine className='w-6 h-6 outline-none' /> {/* Kullanıcı arama simgesi */}
 			</button>
 		</form>

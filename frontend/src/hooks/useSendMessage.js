@@ -1,34 +1,32 @@
-import { useState } from "react"; // React kütüphanesinden useState kancasını içe aktarır
-import useConversation from "../zustand/useConversation"; // useConversation kancasını içe aktarır
-import toast from "react-hot-toast"; // Bildirimler için react-hot-toast kütüphanesini içe aktarır
+import { useState } from "react"; 
+import useConversation from "../zustand/useConversation"; 
+import toast from "react-hot-toast"; 
 
-// Mesaj gönderme işlemleri için özel bir kancayı tanımlar
 const useSendMessage = () => {
-	const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state'i tanımlar ve başlangıç değeri false'tur
-	const { messages, setMessages, selectedConversation } = useConversation(); // useConversation kancasından gerekli öğeleri alır
+	const [loading, setLoading] = useState(false); 
+	const { messages, setMessages, selectedConversation } = useConversation(); 
 
-	// Mesaj gönderme işlemini gerçekleştiren fonksiyon
 	const sendMessage = async (message) => {
-		setLoading(true); // Yükleme durumunu başlatır
+		setLoading(true); 
 		try {
 			const res = await fetch(`/api/messages/send/${selectedConversation._id}`, { // Seçili sohbetin ID'si ile birlikte mesajı göndermek için API'ye istek gönderir
 				method: "POST", // POST isteği kullanır
 				headers: {
-					"Content-Type": "application/json", // JSON içeriği gönderir
+					"Content-Type": "application/json", 
 				},
-				body: JSON.stringify({ message }), // Mesajı JSON formatına dönüştürüp gönderir
+				body: JSON.stringify({ message }), 
 			});
-			const data = await res.json(); // Yanıtı JSON formatına dönüştürür
-			if (data.error) throw new Error(data.error); // Eğer bir hata varsa hatayı fırlatır
+			const data = await res.json(); 
+			if (data.error) throw new Error(data.error); 
 
 			setMessages([...messages, data]); // Yeni mesajı mevcut mesajlar listesine ekler
 		} catch (error) {
 			toast.error(error.message); // Hata durumunda bildirim gösterir
 		} finally {
-			setLoading(false); // Yükleme durumunu sonlandırır
+			setLoading(false); 
 		}
 	};
 
-	return { sendMessage, loading }; // Mesaj gönderme işlevini ve yükleme durumunu döndürür
+	return { sendMessage, loading }; 
 };
-export default useSendMessage; // Mesaj gönderme işlemleri için özel kancayı dışa aktarır
+export default useSendMessage; 

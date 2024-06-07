@@ -1,34 +1,31 @@
-import { useState } from "react"; // React kütüphanesinden useState kancasını içe aktarır
-import toast from "react-hot-toast"; // Bildirimler için react-hot-toast kütüphanesini içe aktarır
-import { useAuthContext } from "../../context/AuthContext"; // Yetkilendirme bağlamını içe aktarır
+import { useState } from "react"; 
+import toast from "react-hot-toast"; 
+import { useAuthContext } from "../../context/AuthContext"; 
 
-// Çıkış işlemleri için özel bir kancayı tanımlar
 const useLogout = () => {
-    const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state'i tanımlar ve başlangıç değeri false'tur
-    const { setAuthUser } = useAuthContext(); // Yetkilendirme bağlamından gerekli fonksiyonu alır
-
-    // Çıkış işlemini gerçekleştiren fonksiyon
+    const [loading, setLoading] = useState(false); 
+    const { setAuthUser } = useAuthContext(); 
     const logout = async () => {
-        setLoading(true); // Yükleme durumunu başlatır
+        setLoading(true); 
         try {
-            const res = await fetch("/api/auth/logout", { // API'ye çıkış isteği gönderir
-                method: "POST", // POST isteği kullanır
-                headers: { "Content-Type": "application/json" }, // JSON içeriği gönderir
+            const res = await fetch("/api/auth/logout", { 
+                method: "POST", 
+                headers: { "Content-Type": "application/json" }, 
             });
-            const data = await res.json(); // Yanıtı JSON formatına dönüştürür
+            const data = await res.json(); 
             if (data.error) {
-                throw new Error(data.error); // Eğer bir hata varsa hatayı fırlatır
+                throw new Error(data.error); 
             }
-            localStorage.setItem("user-info", JSON.stringify(data)); // Kullanıcı bilgilerini yerel depolamaya kaydeder
+            localStorage.setItem("user-info", JSON.stringify(data)); // Kullanıcı bilgilerini yerel depolamaya kaydet
             setAuthUser(null); // Yetkilendirme bağlamında kullanıcı bilgilerini temizler
         } catch (error) {
-            toast.error(error.message); // Hata durumunda bildirim gösterir
+            toast.error(error.message); // Hata durumunda bildirim gösterme
         } finally {
-            setLoading(false); // Yükleme durumunu sonlandırır
+            setLoading(false); 
         }
     };
 
-    return { loading, logout }; // Yükleme durumunu ve çıkış işlevini döndürür
+    return { loading, logout }; 
 };
 
-export default useLogout; // Çıkış işlemleri için özel kancayı dışa aktarır
+export default useLogout; 

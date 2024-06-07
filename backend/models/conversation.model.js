@@ -1,23 +1,23 @@
-import mongoose from "mongoose"; // Mongoose kütüphanesini projeye dahil eder.
+import mongoose from "mongoose"; 
 
-// Konuşma şemasını tanımlar
+// Konuşma şemasın
 const conversationSchema = new mongoose.Schema({
     participants: [
         {
             type: mongoose.Schema.Types.ObjectId, // Katılımcıların kullanıcı kimliklerini saklar
-            ref: 'User', // 'User' modeline referans verir
+            ref: 'User', // 'User' modeli
         }
     ],
     messages: [
         {
             type: mongoose.Schema.Types.ObjectId, // Mesaj kimliklerini saklar
-            ref: 'Message', // 'Message' modeline referans verir
-            default: [], // Varsayılan olarak boş bir dizi
+            ref: 'Message', // 'Message' modeline referans 
+            default: [], // Varsayılan olarak bos array declare
         },
     ],
-}, { timestamps: true }); // Şemaya oluşturulma ve güncellenme zaman damgalarını ekler
+}, { timestamps: true }); //zaman damgalarını ekler mongoDb
 
-// Konuşma modelini tanımlar
+// Konuşma modelini tanımla
 const Conversation = mongoose.model("Conversation", conversationSchema);
 
-export default Conversation; // Konuşma modelini dışa aktarır
+export default Conversation; 

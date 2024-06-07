@@ -1,32 +1,30 @@
-import { useEffect, useState } from "react"; // React'ten useEffect ve useState kancalarını içe aktarır
-import toast from "react-hot-toast"; // Bildirimleri göstermek için kütüphane
+import { useEffect, useState } from "react"; 
+import toast from "react-hot-toast"; 
 
-// Sohbetleri almak için özel kancayı tanımlar
 const useGetConversations = () => {
-	const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state'i tanımlar
-	const [conversations, setConversations] = useState([]); // Sohbetleri tutan state'i tanımlar
+	const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state
+	const [conversations, setConversations] = useState([]); // Sohbetleri tutan state
 
-	// Komponent yüklendiğinde çalışacak etkileşimli bir işlev
 	useEffect(() => {
 		const getConversations = async () => {
-			setLoading(true); // Yükleme durumunu başlatır
+			setLoading(true); // Yükleme durumunu başlat
 			try {
 				const res = await fetch("/api/users"); // Sohbetleri almak için API'ye istek gönderir
-				const data = await res.json(); // Gelen yanıtı JSON formatına dönüştürür
+				const data = await res.json(); // Gelen yanıtı JSON formatr
 				if (data.error) { // Eğer hata varsa
-					throw new Error(data.error); // Hata fırlatır
+					throw new Error(data.error); 
 				}
-				setConversations(data); // Sohbetleri günceller
+				setConversations(data); // Sohbetleri güncelle
 			} catch (error) {
-				toast.error(error.message); // Hata durumunda hata bildirimi gösterir
+				toast.error(error.message); 
 			} finally {
-				setLoading(false); // Yükleme durumunu sonlandırır
+				setLoading(false); 
 			}
 		};
 
-		getConversations(); // Sohbetleri alma işlemini başlatır
-	}, []); // Komponent yüklendiğinde yalnızca bir kez çalışacak şekilde yapılandırılır
+		getConversations(); // Sohbetleri alma işlemini başlat
+	}, []); 
 
-	return { loading, conversations }; // Yükleme durumunu ve sohbetleri döndürür
+	return { loading, conversations }; 
 };
-export default useGetConversations; // Sohbetleri almak için özel kancayı dışa aktarır
+export default useGetConversations; 

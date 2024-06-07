@@ -1,19 +1,18 @@
-import Conversation from "../models/conversation.model.js"; // Sohbet modelini içe aktarır
-import Message from "../models/message.model.js"; // Mesaj modelini içe aktarır
+import Conversation from "../models/conversation.model.js"; 
+import Message from "../models/message.model.js"; 
 
-// Mesaj gönderme işlevi
 export const sendMessage = async (req, res) => {
     try {
-        const { message } = req.body; // İstekten mesajı alır
-        const { id: receiverId } = req.params; // Alıcı kimliğini alır
-        const senderId = req.user._id; // Gönderen kimliğini alır
+        const { message } = req.body; // İstekten mesajı al
+        const { id: receiverId } = req.params; // Alıcı kimliğini al
+        const senderId = req.user._id; // Gönderen kimliğini al
 
-        // İlgili katılımcılarla bir sohbet bulmaya çalışır
+        // sender and receiver arasında sohbet bul
         let conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] },
         });
 
-        // Eğer sohbet bulunamazsa yeni bir sohbet oluşturur
+        // Eğer sohbet bulunamazsa yeni bir sohbet oluştu
         if (!conversation) {
             conversation = await Conversation.create({
                 participants: [senderId, receiverId],
@@ -35,11 +34,11 @@ export const sendMessage = async (req, res) => {
         // Sohbeti ve mesajı veritabanına kaydeder
         await Promise.all([conversation.save(), newMessage.save()]);
 
-        res.status(201).json(newMessage); // Başarılı yanıtla yeni mesajı döndürür
+        res.status(201).json(newMessage); 
 
     } catch (error) {
-        console.log("Error in sendMessage controller: ", error.message); // Hata durumunda konsola hata mesajını yazdırır
-        res.status(500).json({ error: "INTERNAL SERVER ERROR!" }); // Dahili sunucu hatası yanıtıyla hata döndürür
+        console.log("Error in sendMessage controller: ", error.message); 
+        res.status(500).json({ error: "INTERNAL SERVER ERROR!" }); 
     };
 };
 
@@ -47,22 +46,22 @@ export const sendMessage = async (req, res) => {
 export const getMessages = async (req, res) => {
     try {
         const { id: userToChatId } = req.params; // Sohbet edilecek kullanıcının kimliğini alır
-        const senderId = req.user._id; // Gönderen kimliğini alır
+        const senderId = req.user._id; // Gönderen kimliği
 
         // İlgili katılımcılarla bir sohbet bulur ve mesajları içe aktarır
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, userToChatId] },
         }).populate("messages"); // Referansı değil, gerçek mesajları alır
 
-        // Eğer sohbet bulunamazsa boş bir yanıt döndürür
+        // Eğer sohbet bulunamazsa boş bir yanıt döndür
         if (!conversation) return res.status(200).json([]);
 
         const messages = conversation.messages; // Mesajları alır
 
-        res.status(200).json(conversation.messages); // Başarılı yanıtla mesajları döndürür
+        res.status(200).json(conversation.messages); 
 
     } catch (error) {
-        console.log("Error in getMessages controller: ", error.message); // Hata durumunda konsola hata mesajını yazdırır
-        res.status(500).json({ error: "INTERNAL SERVER ERROR!" }); // Dahili sunucu hatası yanıtıyla hata döndürür
+        console.log("Error in getMessages controller: ", error.message); 
+        res.status(500).json({ error: "INTERNAL SERVER ERROR!" }); 
     };
 };

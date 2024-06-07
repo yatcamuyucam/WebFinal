@@ -7,10 +7,10 @@ const generateTokenAndSetCookie = (userId, res) => {
     });
 
     res.cookie("jwt", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000, // MS cinsinden maksimum çerez ömrü (15 gün)
-        httpOnly: true, // XSS saldırılarını önlemek için
-        sameSite: "strict", // CSRF saldırılarını önlemek için
-        secure: process.env.NODE_ENV !== "development", // Sadece HTTPS üzerinden çerez iletilir (geliştirme ortamı hariç)
+        maxAge: 15 * 24 * 60 * 60 * 1000, // MS max cookie (15 gün)
+        httpOnly: true, // XSS saldırıları
+        sameSite: "strict", // CSRF saldırı
+        secure: process.env.NODE_ENV !== "development", // Sadece HTTPS üzerinden çerez iletilir 
     });
 };
 

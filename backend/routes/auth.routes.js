@@ -1,13 +1,11 @@
-import express from "express"; // Express kütüphanesini projeye dahil eder.
-import { signup, login, logout } from "../controllers/auth.controller.js"; // Auth ile ilgili controller fonksiyonlarını içe aktarır.
+import express from "express"; 
+import { signup, login, logout } from "../controllers/auth.controller.js"; 
 
 const router = express.Router(); // Express Router'ı oluşturur.
 
-// Kayıt olma isteğini signup fonksiyonuna yönlendirir.
+// istekler doğru fonk yönlendir
 router.post("/signup", signup);
-// Giriş yapma isteğini login fonksiyonuna yönlendirir.
 router.post("/login", login);
-// Çıkış yapma isteğini logout fonksiyonuna yönlendirir.
 router.post("/logout", logout);
 
-export default router; // Router'ı dışa aktarır.
+export default router; 

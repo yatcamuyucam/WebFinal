@@ -1,54 +1,52 @@
-import { useState } from "react"; // React kütüphanesinden useState kancasını içe aktarır
-import toast from "react-hot-toast"; // Bildirimler için react-hot-toast kütüphanesini içe aktarır
-import { useAuthContext } from "../../context/AuthContext"; // Yetkilendirme bağlamını içe aktarır
+import { useState } from "react"; 
+import toast from "react-hot-toast"; 
+import { useAuthContext } from "../../context/AuthContext"; 
 
-// Kullanıcı kaydı işlemleri için özel bir kancayı tanımlar
 const useSignup = () => {
-    const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state'i tanımlar ve başlangıç değeri false'tur
+    const [loading, setLoading] = useState(false); // Yükleme durumunu takip eden state
 
-    const { setAuthUser } = useAuthContext(); // Yetkilendirme bağlamından gerekli fonksiyonu alır
+    const { setAuthUser } = useAuthContext(); // Yetkilendirme bağlamında gerekli fonksiyonu al
 
-    // Kullanıcı kaydı işlemini gerçekleştiren fonksiyon
+    // Kullanıcı kaydı işlemini gerçekleştiren fonks
     const signup = async ({ fullName, userName, password, confirmPassword, gender }) => {
-        const success = handleInputErrors({ fullName, userName, password, confirmPassword, gender }); // Giriş alanlarının geçerliliğini kontrol eder
-        if (!success) return; // Eğer giriş geçerli değilse işlemi sonlandırır
-        setLoading(true); // Yükleme durumunu başlatır
+        const success = handleInputErrors({ fullName, userName, password, confirmPassword, gender }); 
+        if (!success) return; 
+        setLoading(true); 
 
         try {
-            const res = await fetch("/api/auth/signup", { // API'ye kayıt isteği gönderir
-                method: "POST", // POST isteği kullanır
-                headers: { "Content-Type": "application/json" }, // JSON içeriği gönderir
-                body: JSON.stringify({ fullName, userName, password, confirmPassword, gender }) // Kullanıcı bilgilerini JSON formatına dönüştürür ve gönderir
+            const res = await fetch("/api/auth/signup", { 
+                method: "POST", 
+                headers: { "Content-Type": "application/json" }, 
+                body: JSON.stringify({ fullName, userName, password, confirmPassword, gender })
             });
-            const data = await res.json(); // Yanıtı JSON formatına dönüştürür
+            const data = await res.json(); 
             if (data.error) {
-                throw new Error(data.error); // Eğer bir hata varsa hatayı fırlatır
+                throw new Error(data.error); 
             }
 
-            localStorage.setItem("user-info", JSON.stringify(data)); // Kullanıcı bilgilerini yerel depolamaya kaydeder
-            setAuthUser(data); // Yetkilendirme bağlamında kullanıcı bilgilerini ayarlar
+            localStorage.setItem("user-info", JSON.stringify(data)); 
+            setAuthUser(data);
 
         } catch (error) {
-            toast.error(error.message); // Hata durumunda bildirim gösterir
+            toast.error(error.message); 
         } finally {
-            setLoading(false); // Yükleme durumunu sonlandırır
+            setLoading(false);
         }
     };
 
-    return { loading, signup }; // Yükleme durumunu ve kayıt işlevini döndürür
+    return { loading, signup }; 
 };
 
-export default useSignup; // Kullanıcı kaydı işlemleri için özel kancayı dışa aktarır
+export default useSignup; 
 
-// Giriş alanlarının geçerliliğini kontrol eden yardımcı işlev
 function handleInputErrors({ fullName, userName, password, confirmPassword, gender }) {
     if (!fullName || !userName || !password || !confirmPassword || !gender) {
-        toast.error("Please fill all fields!"); // Eksik alan varsa hata bildirimi gösterir
+        toast.error("Please fill all fields!"); // Eksik alan varsa hata bildirimi göster
         return false;
     }
 
     if (password !== confirmPassword) {
-        toast.error("Passwords do not match!"); // Parolalar eşleşmiyorsa hata bildirimi gösterir
+        toast.error("Passwords do not match!"); // Parolalar eşleşmiyorsa hata bildirimi göster
         return false;
     }
 

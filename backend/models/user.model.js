@@ -1,33 +1,33 @@
-import mongoose from "mongoose"; // Mongoose'yi içe aktarır
+import mongoose from "mongoose";
 
-// Kullanıcı şemasını tanımlar
+// Kullanıcı şeması
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
-        required: true // Tam adın zorunlu olduğunu belirtir
+        required: true // Tam adın zorunlu 
     },
     userName: {
         type: String,
-        required: true, // Kullanıcı adının zorunlu olduğunu belirtir
-        unique: true // Kullanıcı adının benzersiz olması gerektiğini belirtir
+        required: true, 
+        unique: true // Kullanıcı adının benzersiz olmalı
     },
     password: {
         type: String,
-        required: true, // Şifrenin zorunlu olduğunu belirtir
-        minlength: 6 // Şifrenin en az 6 karakter uzunluğunda olması gerektiğini belirtir
+        required: true, 
+        minlength: 6 
     },
     gender: {
         type: String,
-        required: true, // Cinsiyetin zorunlu olduğunu belirtir
-        enum: ["male", "female"] // Cinsiyetin sadece "male" veya "female" olabileceğini belirtir
+        required: true, 
+        enum: ["male", "female"] 
     },
     profilePicture: {
         type: String,
-        default: "", // Profil resminin varsayılan olarak boş olduğunu belirtir
+        default: "", // Profil resminin varsayılan olarak boş 
     },
     //createdAt, updatedAt
-}, { timestamps: true }); // Oluşturulma ve güncellenme zamanlarını otomatik olarak izler
+}, { timestamps: true }); 
 
-const User = mongoose.model("user", userSchema); // Kullanıcı modelini oluşturur
+const User = mongoose.model("user", userSchema); 
 
-export default User; // Kullanıcı modelini dışa aktarır
+export default User; 

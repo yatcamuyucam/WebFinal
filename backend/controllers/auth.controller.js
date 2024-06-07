@@ -1,13 +1,10 @@
-// bcryptjs kütüphanesini projeye dahil eder.
 import bcrypt from "bcryptjs";
 
-// Kullanıcı modelini içe aktarır.
 import User from "../models/user.model.js";
 
-// JWT token üreten yardımcı fonksiyonu içe aktarır.
+// JWT token üreten yardımcı fonksiyon
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
-// Kullanıcı kaydı fonksiyonu
 export const signup = async (req, res) => {
     try {
         // İstekten gelen verileri alır.
@@ -55,31 +52,29 @@ export const signup = async (req, res) => {
         });
 
     } catch (error) {
-        // Hata durumunda konsola hata mesajını yazar ve istemciye iç sunucu hatası döndürür.
         console.log("Error in signup controller.", error.message);
         res.status(500).json({ error: "INTERNAL SERVER ERROR!" });
     }
 };
 
-// Kullanıcı giriş fonksiyonu
 export const login = async (req, res) => {
     try {
-        // İstekten gelen kullanıcı adı ve şifreyi alır.
+        // İstekten gelen kullanıcı adı ve şifreyi al
         const { userName, password } = req.body;
 
-        // Kullanıcıyı veritabanında bulur.
+        // Kullanıcıyı veritabanında bul
         const user = await User.findOne({ userName });
 
-        // Kullanıcı yoksa veya şifre yanlışsa hata döndürür.
+        // Kullanıcı yoksa veya şifre yanlışsa hata.
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
         if (!user || !isPasswordCorrect) {
             return res.status(400).json({ error: "Invalid username or password!" });
         }
 
-        // Başarılı giriş durumunda JWT token üretir ve set eder.
+        // Başarılı girişteJWT token üret
         generateTokenAndSetCookie(user._id, res);
 
-        // Kullanıcı bilgilerini döndürür.
+        // Kullanıcı bilgilerini döndür
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
@@ -88,13 +83,11 @@ export const login = async (req, res) => {
         });
 
     } catch (error) {
-        // Hata durumunda konsola hata mesajını yazar ve istemciye iç sunucu hatası döndürür.
         console.log("Error in login controller.", error.message);
         res.status(500).json({ error: "INTERNAL SERVER ERROR!" });
     }
 };
 
-// Kullanıcı çıkış fonksiyonu
 export const logout = (req, res) => {
     try {
         // Cookie'yi temizler ve başarı durumunda mesaj döndürür.
@@ -102,7 +95,6 @@ export const logout = (req, res) => {
         res.status(200).json({ message: "Logged out succesfully!" });
 
     } catch (error) {
-        // Hata durumunda konsola hata mesajını yazar ve istemciye iç sunucu hatası döndürür.
         console.log("Error in logout controller.", error.message);
         res.status(500).json({ error: "INTERNAL SERVER ERROR!" });
     }

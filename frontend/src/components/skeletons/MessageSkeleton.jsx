@@ -1,4 +1,3 @@
-// Mesaj iskelet bileşeni
 const MessageSkeleton = () => {
 	return (
 		<>
@@ -24,4 +23,4 @@ const MessageSkeleton = () => {
 		</>
 	);
 };
-export default MessageSkeleton; // Mesaj iskelet bileşenini dışa aktarır
+export default MessageSkeleton; 
