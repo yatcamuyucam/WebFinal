@@ -1,5 +1,4 @@
 import mongoose from "mongoose"; 
-
 // Konuşma şemasın
 const conversationSchema = new mongoose.Schema({
     participants: [
